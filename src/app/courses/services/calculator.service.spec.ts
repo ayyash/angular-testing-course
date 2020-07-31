@@ -1,53 +1,59 @@
-import {CalculatorService} from './calculator.service';
-import {LoggerService} from './logger.service';
-import {TestBed} from '@angular/core/testing';
 
+import { CalculatorService } from './calculator.service';
+import { LoggerService } from './logger.service';
+import { TestBed } from '@angular/core/testing';
 
-describe('CalculatorService', () => {
+// prefix x to disable, prefix f to focus and run only
+xdescribe('CalculateService', () => {
 
-    let calculator: CalculatorService,
-        loggerSpy: any;
+  let calculator: CalculatorService;
+  let loggerSpy: any;
 
-    beforeEach(()=> {
+  beforeEach(() => {
+    loggerSpy = jasmine.createSpyObj('LoggerService', ['log']);
+    // this
+    // calculator = new CalculatorService(loggerSpy);
 
-        console.log("Calling beforeEach");
-
-        loggerSpy = jasmine.createSpyObj('LoggerService', ["log"]);
-
-        TestBed.configureTestingModule({
-            providers: [
-                CalculatorService,
-                {provide: LoggerService, useValue: loggerSpy}
-            ]
-        });
-
-        calculator = TestBed.get(CalculatorService);
-
+    // or this
+    TestBed.configureTestingModule({
+        providers: [
+          CalculatorService,
+          {provide: LoggerService, useValue: loggerSpy}
+        ]
     });
 
-    it('should add two numbers', () => {
+    calculator = TestBed.inject(CalculatorService);
 
-        console.log("add test");
+  });
 
-        const result = calculator.add(2, 2);
+  it('should add two numbers', () => {
 
-        expect(result).toBe(4);
+    console.log('add text');
+    // const logger = new LoggerService();
+    // spyOn(logger, "log");
 
-        expect(loggerSpy.log).toHaveBeenCalledTimes(1);
+    // const loggerSpy = jasmine.createSpyObj('LoggerService', ['log']);
 
-    });
+    // loggerSpy.log.and.returnValue();
+
+    // const calculator = new CalculatorService(loggerSpy);
 
 
-    it('should subtract two numbers', () => {
+    const result = calculator.add(2, 2);
+    expect(result).toBe(4);
 
-        console.log("subtract test");
+    expect(loggerSpy.log).toHaveBeenCalledTimes(1);
 
-        const result = calculator.subtract(2, 2);
+  });
 
-        expect(result).toBe(0, "unexpected subtraction result");
+  xit('should subtract two numbers', () => {
 
-        expect(loggerSpy.log).toHaveBeenCalledTimes(1);
+    console.log('subtract test');
 
-    });
+    const result = calculator.subtract(2, 2);
+    expect(result).toBe(0, "unexpected result");
+    expect(loggerSpy.log).toHaveBeenCalledTimes(1);
+  });
 
 });
+
